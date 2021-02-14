@@ -15,12 +15,18 @@ namespace BikeStore.Api.Controllers
             _productRepository = productRepository;
         }
 
-
         [HttpGet]
-        public async Task<IActionResult> GetProduct() 
+        public async Task<IActionResult> GetProduct()
         {
             var products = await _productRepository.GetProducts();
             return Ok(products);
+        }
+
+        [HttpGet ("{id}")]
+        public async Task<IActionResult> GetProductID(int id)
+        {
+            var product = await _productRepository.GetProductId(id);
+            return Ok(product);
         }
     }
 }

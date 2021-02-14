@@ -18,6 +18,12 @@ namespace BikeStore.Infrastructure.Repositories
         {
             var products = await _context.Products.ToListAsync();             
             return products;
-        }      
+        }
+
+        public async Task<Products> GetProductId(int id)
+        {
+            var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductId == id);
+            return product;
+        }
     }
 }

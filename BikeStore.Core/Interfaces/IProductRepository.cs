@@ -7,5 +7,6 @@ namespace BikeStore.Core.Interfaces
     public interface IProductRepository
     {
         Task<IEnumerable<Products>> GetProducts();
+        Task<Products> GetProductId(int id);
     }
 }
