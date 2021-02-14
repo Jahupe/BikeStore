@@ -1,5 +1,7 @@
-﻿using BikeStore.Infrastructure.Repositories;
+﻿using BikeStore.Core.Interfaces;
+using BikeStore.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace BikeStore.Api.Controllers
 {
@@ -7,10 +9,17 @@ namespace BikeStore.Api.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetProduct() 
+        private readonly IProductRepository _productRepository;
+        public ProductController(IProductRepository productRepository)
         {
-            var products = new ProductRepository().GetProducts();
+            _productRepository = productRepository;
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetProduct() 
+        {
+            var products = await _productRepository.GetProducts();
             return Ok(products);
         }
     }

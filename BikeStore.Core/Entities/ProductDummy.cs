@@ -1,6 +1,6 @@
 ﻿namespace BikeStore.Core.Entities
 {
-    public class Product
+    public class ProductDummy
     {
         public int product_id { get; set; }
         public string product_name { get; set; }

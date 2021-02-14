@@ -1,26 +1,23 @@
-﻿using BikeStore.Core.Entities;
-using System;
+﻿using BikeStore.Core.Data;
+using BikeStore.Core.Interfaces;
+using BikeStore.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace BikeStore.Infrastructure.Repositories
 {
-    public class ProductRepository
+    public class ProductRepository : IProductRepository
     {
-        public IEnumerable<Product> GetProducts()
+        private readonly BikeStoresContext _context;
+        public ProductRepository(BikeStoresContext context)
         {
-            var products = Enumerable.Range(1, 10).Select(x => new Product
-            {
-              product_id = x,
-              product_name = $"Producto {x}",
-              brand_id = x,
-              category_id = x,
-              model_year = 2021,
-              list_price = x * 123
-            });
-
-            return products;
+            _context = context;
         }
+        public async Task<IEnumerable<Products>> GetProducts()
+        {
+            var products = await _context.Products.ToListAsync();             
+            return products;
+        }      
     }
 }
