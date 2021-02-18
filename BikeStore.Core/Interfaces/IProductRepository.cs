@@ -8,5 +8,6 @@ namespace BikeStore.Core.Interfaces
     {
         Task<IEnumerable<Products>> GetProducts();
         Task<Products> GetProductId(int id);
+        Task InsertProduct(Products products);
     }
 }

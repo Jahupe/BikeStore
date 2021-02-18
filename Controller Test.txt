@@ -1,9 +1,11 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BikeStore.Core.Data;
 using BikeStore.Core.DTOs;
 using BikeStore.Core.Interfaces;
+using BikeStore.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BikeStore.Api.Controllers
@@ -20,29 +22,52 @@ namespace BikeStore.Api.Controllers
             _mapper = mapper;
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetProduct()
         {
             var products = await _productRepository.GetProducts();
             var ProductsDto = _mapper.Map<IEnumerable<ProductsDto>>(products);
+            //    products.Select(x => new ProductsDto
+            //{
+            //    ProductId = x.ProductId,
+            //    ProductName = x.ProductName,
+            //    BrandId = x.BrandId,
+            //    CategoryId = x.CategoryId,
+            //    ModelYear = x.ModelYear,
+            //    ListPrice = x.ListPrice
+            //});
             return Ok(ProductsDto);
         }
-
 
         [HttpGet ("{id}")]
         public async Task<IActionResult> GetProductID(int id)
         {
             var product = await _productRepository.GetProductId(id);
             var ProductsDto = _mapper.Map<ProductsDto>(product);
+            //    new ProductsDto
+            //{
+            //    ProductId = product.ProductId,
+            //    ProductName = product.ProductName,
+            //    BrandId = product.BrandId,
+            //    CategoryId = product.CategoryId,
+            //    ModelYear = product.ModelYear,
+            //    ListPrice = product.ListPrice
+            //};
             return Ok(product);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Products(ProductsDto productsDto)
         {
             var products = _mapper.Map<Products>(productsDto);
+            //    new Products
+            //{
+            //    ProductName = productsDto.ProductName,
+            //    BrandId = productsDto.BrandId,
+            //    CategoryId = productsDto.CategoryId,
+            //    ModelYear = productsDto.ModelYear,
+            //    ListPrice = productsDto.ListPrice
+            //};
             await _productRepository.InsertProduct(products);
             return Ok(products);
         }

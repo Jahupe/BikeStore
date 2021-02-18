@@ -1,12 +1,16 @@
+using AutoMapper;
 using BikeStore.Core.Interfaces;
 using BikeStore.Infrastructure.Data;
+using BikeStore.Infrastructure.Filters;
 using BikeStore.Infrastructure.Repositories;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace BikeStore.Api
 {
@@ -22,13 +26,28 @@ namespace BikeStore.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddControllers().AddNewtonsoftJson(options => {
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            }).ConfigureApiBehaviorOptions(options => {
+                //options.SuppressModelStateInvalidFilter = true;
+            });
 
             services.AddDbContext<BikeStoresContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("BikeStore"))
             );
 
             services.AddTransient<IProductRepository, ProductRepository>();
+
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<ValidationFilter>();
+            }).AddFluentValidation(Options =>
+            {
+                Options.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

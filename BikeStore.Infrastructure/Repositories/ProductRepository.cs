@@ -25,5 +25,12 @@ namespace BikeStore.Infrastructure.Repositories
             var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductId == id);
             return product;
         }
+
+        public async Task InsertProduct(Products products)
+        {
+            _context.Products.Add(products);
+            await _context.SaveChangesAsync(); 
+
+        }
     }
 }
