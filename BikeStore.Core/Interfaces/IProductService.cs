@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BikeStore.Core.Interfaces
 {
-    public interface IProductRepository
+    public interface IProductService
     {
         Task<IEnumerable<Products>> GetProducts();
         Task<Products> GetProductId(int id);

@@ -1,4 +1,6 @@
-﻿namespace BikeStore.Core.Data
+﻿using BikeStore.Core.Entities;
+
+namespace BikeStore.Core.Data
 {
     public partial class Stocks
     {

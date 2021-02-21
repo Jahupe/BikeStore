@@ -22,15 +22,36 @@ namespace BikeStore.Infrastructure.Repositories
 
         public async Task<Products> GetProductId(int id)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductId == id);
+            var product = await _context.Products.FirstOrDefaultAsync(x => x.id == id);
             return product;
         }
 
-        public async Task InsertProduct(Products products)
+        public async Task<bool> InsertProduct(Products products)
         {
             _context.Products.Add(products);
-            await _context.SaveChangesAsync(); 
+            int rows= await _context.SaveChangesAsync();
+            return rows > 0;
+        }
 
+        public async Task<bool> UpdateProduct(Products products) 
+        {
+            var currentproducts = await GetProductId(products.id);
+            currentproducts.ProductName = products.ProductName;
+            currentproducts.BrandId = products.BrandId;
+            currentproducts.CategoryId = products.CategoryId;
+            currentproducts.ModelYear = products.ModelYear;
+            currentproducts.ListPrice = products.ListPrice;
+            int rows =await _context.SaveChangesAsync();
+            return rows > 0;
+        }
+
+
+        public async Task<bool> DeleteProduct(int id)
+        {
+            var currentproduct = await GetProductId(id);
+            _context.Products.Remove(currentproduct);
+            int rows = await _context.SaveChangesAsync();
+            return rows > 0;
         }
     }
 }

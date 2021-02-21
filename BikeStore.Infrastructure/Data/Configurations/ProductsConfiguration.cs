@@ -9,12 +9,12 @@ namespace BikeStore.Infrastructure.Data.Configurations
         public void Configure(EntityTypeBuilder<Products> builder)
         {
 
-                builder.HasKey(e => e.ProductId)
+                builder.HasKey(e => e.id)
                     .HasName("PK__products__47027DF5FD292BB2");
 
                 builder.ToTable("products", "production");
 
-                builder.Property(e => e.ProductId).HasColumnName("product_id");
+                builder.Property(e => e.id).HasColumnName("product_id");
 
                 builder.Property(e => e.BrandId).HasColumnName("brand_id");
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BikeStore.Core.Entities;
+using System.Collections.Generic;
 
 namespace BikeStore.Core.Data
 {

@@ -1,6 +1,5 @@
 ﻿using BikeStore.Core.DTOs;
 using FluentValidation;
-using System;
 
 namespace BikeStore.Infrastructure.Validators
 {
@@ -13,10 +12,7 @@ namespace BikeStore.Infrastructure.Validators
                 .Length(5, 200);
             RuleFor(products => products.ListPrice)
                 .NotNull()
-                .LessThan(1950).WithMessage("The Product Price Cannot be more than S/.1950");
-                
-                
-                
+                .LessThan(1950).WithMessage("The Product Price Cannot be more than S/.1950");                                                
         }
     }
 }

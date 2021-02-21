@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using BikeStore.Core.Entities;
+using System.Collections.Generic;
 
 namespace BikeStore.Core.Data
 {
-    public partial class Products
+    public partial class Products: BaseEntity
     {
         public Products()
         {
@@ -10,7 +11,7 @@ namespace BikeStore.Core.Data
             Stocks = new HashSet<Stocks>();
         }
 
-        public int ProductId { get; set; }
+        //public int ProductId { get; set; }
         public string ProductName { get; set; }
         public int BrandId { get; set; }
         public int CategoryId { get; set; }

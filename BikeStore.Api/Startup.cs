@@ -1,5 +1,6 @@
 using AutoMapper;
 using BikeStore.Core.Interfaces;
+using BikeStore.Core.Services;
 using BikeStore.Infrastructure.Data;
 using BikeStore.Infrastructure.Filters;
 using BikeStore.Infrastructure.Repositories;
@@ -39,7 +40,11 @@ namespace BikeStore.Api
                 options.UseSqlServer(Configuration.GetConnectionString("BikeStore"))
             );
 
-            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IProductService, ProductService>();
+            //services.AddTransient<IBrandRepository, BrandRepository>();
+            //services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddMvc(options =>
             {

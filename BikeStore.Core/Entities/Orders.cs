@@ -1,9 +1,10 @@
-﻿using System;
+﻿using BikeStore.Core.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace BikeStore.Core.Data
 {
-    public partial class Orders
+    public partial class Orders 
     {
         public Orders()
         {

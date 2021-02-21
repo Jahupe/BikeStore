@@ -2,7 +2,7 @@
 
 namespace BikeStore.Core.Data
 {
-    public partial class Customers
+    public partial class Customers 
     {
         public Customers()
         {

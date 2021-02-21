@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 namespace BikeStore.Core.Data
 {
-    public partial class Categories
+    public partial class Categories 
     {
         public Categories()
         {
@@ -10,7 +10,6 @@ namespace BikeStore.Core.Data
 
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
-
         public virtual ICollection<Products> Products { get; set; }
     }
 }
