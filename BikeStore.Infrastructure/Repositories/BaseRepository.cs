@@ -2,9 +2,8 @@
 using BikeStore.Core.Interfaces;
 using BikeStore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BikeStore.Infrastructure.Repositories
@@ -12,16 +11,16 @@ namespace BikeStore.Infrastructure.Repositories
     public class BaseRepository<T> : IRepository<T> where T: BaseEntity
     {
         private readonly BikeStoresContext _context;
-        private readonly DbSet<T> _entities;
+        protected readonly DbSet<T> _entities;
 
         public BaseRepository(BikeStoresContext context)
         {
             _context = context;
             _entities = context.Set<T>(); 
         }
-        public async Task<IEnumerable<T>> GetAll()
+        public IEnumerable<T> GetAll()
         {
-            return await _entities.ToListAsync();
+            return  _entities.AsEnumerable();
         }
 
         public async Task<T> GetById(int id)
@@ -29,26 +28,25 @@ namespace BikeStore.Infrastructure.Repositories
             return await _entities.FindAsync(id);
         }
 
-        public async Task<bool> Add(T entity)
+        public async Task Add(T entity)
         {
-            _entities.Add(entity);
+            await _entities.AddAsync(entity);
             await _context.SaveChangesAsync();
-            return true;
+            //return true;
         }
 
-        public async Task<bool> Update(T entity)
+        public void Update(T entity)
         {
             _entities.Update(entity);
-            await _context.SaveChangesAsync();
-            return true;
+             _context.SaveChangesAsync();
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task Delete(int id)
         {
             T entity = await GetById(id);
             _entities.Remove(entity);
-            await _context.SaveChangesAsync();
-            return true;
+            //_context.SaveChangesAsync();
+
         }                  
 
       

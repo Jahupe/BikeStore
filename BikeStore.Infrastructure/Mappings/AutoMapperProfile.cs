@@ -10,6 +10,9 @@ namespace BikeStore.Infrastructure.Mappings
         {
             CreateMap<Products, ProductsDto>();
             CreateMap<ProductsDto, Products>();
+            CreateMap<BrandDto, Brands>();
+            CreateMap<Brands, BrandDto>();
+
         }
 
     }

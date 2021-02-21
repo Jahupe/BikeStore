@@ -6,7 +6,7 @@ namespace BikeStore.Core.Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<Products>> GetProducts();
+        IEnumerable<Products> GetProducts();
         Task<Products> GetProductId(int id);
         Task<bool> InsertProduct(Products products);
         Task<bool> UpdateProduct(Products products);

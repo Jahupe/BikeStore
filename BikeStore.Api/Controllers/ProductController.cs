@@ -24,7 +24,7 @@ namespace BikeStore.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var products = await _productservice.GetProducts();
+            var products = _productservice.GetProducts();
             var productsDto = _mapper.Map<IEnumerable<ProductsDto>>(products);
             var response = new ApiResponse<IEnumerable<ProductsDto>>(productsDto);
             return Ok(response);
@@ -39,7 +39,6 @@ namespace BikeStore.Api.Controllers
             var response = new ApiResponse<ProductsDto>(productsDto);
             return Ok(response);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Post(ProductsDto productsDto)

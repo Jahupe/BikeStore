@@ -11,7 +11,6 @@ namespace BikeStore.Core.Data
 
         //public int BrandId { get; set; }
         public string BrandName { get; set; }
-
         public virtual ICollection<Products> Products { get; set; }
     }
 }

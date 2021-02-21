@@ -8,7 +8,7 @@ namespace BikeStore.Core.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-       IRepository<Products> ProductRepository { get; }
+       IProductRepository ProductRepository { get; }
        IRepository<Brands> BrandRepository { get; }
        void SaveChanges();
        Task SaveChangesAsync();

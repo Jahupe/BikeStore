@@ -30,7 +30,9 @@ namespace BikeStore.Api
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddControllers().AddNewtonsoftJson(options => {
+            services.AddControllers(options => {
+                options.Filters.Add<GlobalExceptionFilter>();            
+            }).AddNewtonsoftJson(options => {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             }).ConfigureApiBehaviorOptions(options => {
                 //options.SuppressModelStateInvalidFilter = true;
@@ -41,6 +43,7 @@ namespace BikeStore.Api
             );
 
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IBrandService, BrandService>();
             //services.AddTransient<IBrandRepository, BrandRepository>();
             //services.AddTransient<IProductRepository, ProductRepository>();
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
