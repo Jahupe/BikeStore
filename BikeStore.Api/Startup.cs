@@ -1,12 +1,16 @@
 using AutoMapper;
+using BikeStore.Core.CustomEntities;
 using BikeStore.Core.Interfaces;
 using BikeStore.Core.Services;
 using BikeStore.Infrastructure.Data;
 using BikeStore.Infrastructure.Filters;
+using BikeStore.Infrastructure.Interfaces;
 using BikeStore.Infrastructure.Repositories;
+using BikeStore.Infrastructure.Services;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,9 +38,12 @@ namespace BikeStore.Api
                 options.Filters.Add<GlobalExceptionFilter>();            
             }).AddNewtonsoftJson(options => {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             }).ConfigureApiBehaviorOptions(options => {
                 //options.SuppressModelStateInvalidFilter = true;
             });
+
+            services.Configure<PaginationOptions>(Configuration.GetSection("Pagination"));
 
             services.AddDbContext<BikeStoresContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("BikeStore"))
@@ -48,6 +55,13 @@ namespace BikeStore.Api
             //services.AddTransient<IProductRepository, ProductRepository>();
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IUriServices>(provider =>
+            {
+                var accesor = provider.GetRequiredService<IHttpContextAccessor>();
+                var request = accesor.HttpContext.Request;
+                var absoluteUri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+                return new UriServices(absoluteUri);
+            });
 
             services.AddMvc(options =>
             {

@@ -1,8 +1,9 @@
-﻿using BikeStore.Core.Data;
+﻿using BikeStore.Core.CustomEntities;
+using BikeStore.Core.Data;
 using BikeStore.Core.Exceptions;
 using BikeStore.Core.Interfaces;
-using System;
-using System.Collections.Generic;
+using BikeStore.Core.QueryFilters;
+using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,15 +12,35 @@ namespace BikeStore.Core.Services
     public class ProductService : IProductService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly PaginationOptions _paginationOptions;
 
-        public ProductService(IUnitOfWork unitOfWork)
+        public ProductService(IUnitOfWork unitOfWork, IOptions<PaginationOptions> options)
         {
             _unitOfWork = unitOfWork;
+            _paginationOptions = options.Value;
         }
 
-        public IEnumerable<Products> GetProducts()
+        public PagedList<Products> GetProducts(ProductQueryFilter filters)
         {
-             return _unitOfWork.ProductRepository.GetAll();
+            filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;
+            filters.PageSize = filters.PageSize == 0 ? _paginationOptions.DefaultPageSize : filters.PageSize;
+            var products =  _unitOfWork.ProductRepository.GetAll();
+            if (filters.product_name != null)
+            {
+                products = products.Where(x => x.ProductName.ToLower().Contains(filters.product_name.ToLower()));
+            }
+            if (filters.brand_id != null)
+            {
+                products = products.Where(x => x.BrandId == filters.brand_id);
+            }
+            if (filters.category_id != null)
+            {
+                products = products.Where(x => x.CategoryId == filters.category_id);
+            }
+
+            var PagedProducts = PagedList<Products>.create(products,filters.PageNumber,filters.PageSize);
+
+            return PagedProducts;
         }
 
         public async Task<Products> GetProductId(int id)
