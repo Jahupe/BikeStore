@@ -15,7 +15,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace BikeStore.Api
 {
@@ -63,6 +66,18 @@ namespace BikeStore.Api
                 return new UriServices(absoluteUri);
             });
 
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "BikeStore API",
+                    Version = "V1"
+                });
+                var xmlfile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlfile);
+                options.IncludeXmlComments(xmlPath);
+            });
+
             services.AddMvc(options =>
             {
                 options.Filters.Add<ValidationFilter>();
@@ -81,6 +96,13 @@ namespace BikeStore.Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "BikeStore API V1");
+                options.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 

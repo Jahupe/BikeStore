@@ -24,6 +24,7 @@ namespace BikeStore.Core.Services
         {
             filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;
             filters.PageSize = filters.PageSize == 0 ? _paginationOptions.DefaultPageSize : filters.PageSize;
+
             var products =  _unitOfWork.ProductRepository.GetAll();
             if (filters.product_name != null)
             {

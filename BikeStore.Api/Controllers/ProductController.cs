@@ -13,7 +13,8 @@ using System.Net;
 using System.Threading.Tasks;
 
 namespace BikeStore.Api.Controllers
-{
+{   
+    [Produces("Application/Json")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -29,9 +30,15 @@ namespace BikeStore.Api.Controllers
             _uriservices = uriservices;
         }
 
+        /// <summary>
+        /// Retrieve all Products
+        /// </summary>
+        /// <param name="filters">Filters  to Apply</param>
+        /// <returns></returns>
+
         [HttpGet(Name = nameof(Get))]
         [ProducesResponseType((int)HttpStatusCode.OK, Type= typeof(ApiResponse<IEnumerable<ProductsDto>>))]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest, Type = typeof(ApiResponse<IEnumerable<ProductsDto>>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public IActionResult Get([FromQuery]ProductQueryFilter filters)
         {
             var products =  _productservice.GetProducts(filters);
