@@ -6,6 +6,7 @@ using BikeStore.Core.DTOs;
 using BikeStore.Core.Interfaces;
 using BikeStore.Core.QueryFilters;
 using BikeStore.Infrastructure.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ using System.Net;
 using System.Threading.Tasks;
 
 namespace BikeStore.Api.Controllers
-{   
+{
+    [Authorize]
     [Produces("Application/Json")]
     [Route("api/[controller]")]
     [ApiController]
