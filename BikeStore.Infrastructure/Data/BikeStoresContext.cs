@@ -1,6 +1,7 @@
 ﻿using BikeStore.Core.Data;
-using BikeStore.Infrastructure.Data.Configurations;
+using BikeStore.Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace BikeStore.Infrastructure.Data
 {
@@ -24,31 +25,13 @@ namespace BikeStore.Infrastructure.Data
         public virtual DbSet<Staffs> Staffs { get; set; }
         public virtual DbSet<Stocks> Stocks { get; set; }
         public virtual DbSet<Stores> Stores { get; set; }
+        public virtual DbSet<Security> Securities { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new BrandsConfiguration());
-
-            modelBuilder.ApplyConfiguration(new CategoriesConfiguration());
-
-            modelBuilder.ApplyConfiguration(new CustomersConfiguration());
-
-            modelBuilder.ApplyConfiguration(new OrderItemsConfiguration());
-
-            modelBuilder.ApplyConfiguration(new OrdersConfiguration());
-
-            modelBuilder.ApplyConfiguration(new ProductsConfiguration());
-
-            modelBuilder.ApplyConfiguration(new StaffsConfiguration());
-
-            modelBuilder.ApplyConfiguration(new StocksConfiguration());
-
-            modelBuilder.ApplyConfiguration(new StoresConfiguration());
-
-            OnModelCreatingPartial(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

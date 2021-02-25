@@ -45,7 +45,7 @@ namespace BikeStore.Infrastructure.Repositories
         {
             T entity = await GetById(id);
             _entities.Remove(entity);
-            //_context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
         }                  
 

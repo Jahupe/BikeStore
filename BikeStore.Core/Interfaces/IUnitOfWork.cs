@@ -10,6 +10,7 @@ namespace BikeStore.Core.Interfaces
     {
        IProductRepository ProductRepository { get; }
        IRepository<Brands> BrandRepository { get; }
+       ISecurityRepository SecurityRepository { get; }
        void SaveChanges();
        Task SaveChangesAsync();
 

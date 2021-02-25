@@ -5,8 +5,10 @@ using BikeStore.Core.Services;
 using BikeStore.Infrastructure.Data;
 using BikeStore.Infrastructure.Filters;
 using BikeStore.Infrastructure.Interfaces;
+using BikeStore.Infrastructure.Options;
 using BikeStore.Infrastructure.Repositories;
 using BikeStore.Infrastructure.Services;
+using BikeStore.Infrastructure.Extensions;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -49,37 +51,14 @@ namespace BikeStore.Api
                 //options.SuppressModelStateInvalidFilter = true;
             });
 
-            services.Configure<PaginationOptions>(Configuration.GetSection("Pagination"));
 
-            services.AddDbContext<BikeStoresContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("BikeStore"))
-            );
+            services.AddOptions(Configuration);
+            services.AddDbContexts(Configuration);
+            services.AddServices();
+            services.AddSwagger($"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
 
-            services.AddTransient<IProductService, ProductService>();
-            services.AddTransient<IBrandService, BrandService>();
-            //services.AddTransient<IBrandRepository, BrandRepository>();
-            //services.AddTransient<IProductRepository, ProductRepository>();
-            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddSingleton<IUriServices>(provider =>
-            {
-                var accesor = provider.GetRequiredService<IHttpContextAccessor>();
-                var request = accesor.HttpContext.Request;
-                var absoluteUri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
-                return new UriServices(absoluteUri);
-            });
 
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "BikeStore API",
-                    Version = "V1"
-                });
-                var xmlfile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlfile);
-                options.IncludeXmlComments(xmlPath);
-            });
+
 
             services.AddAuthentication(options =>
             {
@@ -121,7 +100,7 @@ namespace BikeStore.Api
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "BikeStore API V1");
+                options.SwaggerEndpoint("../swagger/v1/swagger.json", "BikeStore API V1");
                 options.RoutePrefix = string.Empty;
             });
 

@@ -11,7 +11,7 @@ namespace BikeStore.Infrastructure.Repositories
         private readonly BikeStoresContext _context;
         private readonly IProductRepository _productrepository;
         private readonly IRepository<Brands> _brandrepository;
-
+        private readonly ISecurityRepository _securityrepository;
 
         public UnitOfWork(BikeStoresContext context)
         {
@@ -20,6 +20,7 @@ namespace BikeStore.Infrastructure.Repositories
 
         public IProductRepository ProductRepository => _productrepository ?? new ProductRepository(_context);
         public IRepository<Brands> BrandRepository => _brandrepository ?? new BaseRepository<Brands>(_context);
+        public ISecurityRepository SecurityRepository => _securityrepository ?? new SecurityRepository(_context);
 
         public void Dispose()
         {

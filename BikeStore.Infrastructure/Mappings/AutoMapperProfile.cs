@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BikeStore.Core.Data;
 using BikeStore.Core.DTOs;
+using BikeStore.Core.Entities;
 
 namespace BikeStore.Infrastructure.Mappings
 {
@@ -10,8 +11,11 @@ namespace BikeStore.Infrastructure.Mappings
         {
             CreateMap<Products, ProductsDto>();
             CreateMap<ProductsDto, Products>();
+
             CreateMap<BrandDto, Brands>();
             CreateMap<Brands, BrandDto>();
+
+            CreateMap<Security, SecurityDto>().ReverseMap();
 
         }
 
