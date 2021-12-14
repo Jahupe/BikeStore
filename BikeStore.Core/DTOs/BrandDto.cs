@@ -9,5 +9,9 @@ namespace BikeStore.Core.DTOs
         public int Id { get; set; }
         public string BrandName { get; set; }
         public int NewProperty { get; set; }
+
+        public string NewPro2 { get; set; }
+        public int MyProperty { get; set; }
+        public int jp { get; set; }
     }
 }
