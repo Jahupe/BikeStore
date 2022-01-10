@@ -5,6 +5,7 @@
         Administrador,
         Reader,        
         Consumer,
+        Protected
 
     }
 }
