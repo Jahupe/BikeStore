@@ -3,6 +3,8 @@
     public enum RoleType
     {
         Administrador,
-        Consumer
+        Reader,        
+        Consumer,
+
     }
 }
